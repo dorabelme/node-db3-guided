@@ -1,6 +1,7 @@
 const express = require('express');
 
-const db = require('../data/db-config.js');
+// const db = require('../data/db-config.js');
+const Users = require('./user-model.js');
 
 const router = express.Router();
 
@@ -78,8 +79,9 @@ router.delete('/:id', (req, res) => {
 });
 
 router.get('/:id/posts', (req, res) => {
-  db('posts as p')
-    .join('users as u', 'u.id', '=', 'p.user_id')
+  const { id } = req.params;
+
+  Users.findUserPosts(id)
     .then(posts => {
       res.status(200).json(posts)
     })
